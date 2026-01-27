@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenRA.Converter.Core.Interfaces;
-using OpenRA.Converter.Infrastructure.Services;
+using OpenRA.Converter.Infrastructure.Services; // Itt van az IFileWriterService
 using System;
 using System.Text.Json;
 
@@ -15,19 +15,22 @@ namespace OpenRA.Converter.Api.Controllers
         private readonly IYamlSynthesisService _yamlSynthesisService;
         private readonly ICodeWriter _csharpWriter;
         private readonly IYamlCodeWriter _yamlWriter;
+        private readonly IFileWriterService _fileWriter; // Új mező
 
         public SynthesisController(
             IDecisionTreeService treeService,
             ITraitSynthesisService csharpSynthesisService,
             IYamlSynthesisService yamlSynthesisService,
             ICodeWriter csharpWriter,
-            IYamlCodeWriter yamlWriter)
+            IYamlCodeWriter yamlWriter,
+            IFileWriterService fileWriter) // Új paraméter
         {
             _treeService = treeService;
             _csharpSynthesisService = csharpSynthesisService;
             _yamlSynthesisService = yamlSynthesisService;
             _csharpWriter = csharpWriter;
             _yamlWriter = yamlWriter;
+            _fileWriter = fileWriter;
         }
 
         [HttpPost("generate-csharp")]
@@ -39,17 +42,18 @@ namespace OpenRA.Converter.Api.Controllers
                 var validationErrors = _treeService.ValidateTree(rootNode);
                 if (validationErrors.Count > 0) return BadRequest(new { Errors = validationErrors });
 
-                // Synthesize using the new "Smart" service
                 var classStructure = _csharpSynthesisService.SynthesizeTrait(rootNode, traitName);
-
-                // Convert structure to string
                 var code = _csharpWriter.WriteClass(classStructure);
+
+                // --- Fájlba mentés ---
+                string fileName = $"{traitName}.cs";
+                string savedPath = _fileWriter.SaveCSharpFile(fileName, code);
 
                 return Ok(new
                 {
-                    FileName = $"{traitName}.cs",
+                    FileName = fileName,
+                    SavedPath = savedPath, // Visszaadjuk, hova mentettük
                     Code = code,
-                    // Return the auto-detected dependencies so the UI can show them
                     DetectedDependencies = classStructure.RequiredYamlInherits
                 });
             }
@@ -68,15 +72,21 @@ namespace OpenRA.Converter.Api.Controllers
                 var validationErrors = _treeService.ValidateTree(rootNode);
                 if (validationErrors.Count > 0) return BadRequest(new { Errors = validationErrors });
 
-                // 1. Run C# Synthesis first to detect parameters & dependencies
                 var classStructure = _csharpSynthesisService.SynthesizeTrait(rootNode, traitName);
-
-                // 2. Pass that result into YAML synthesis
                 var yamlStructure = _yamlSynthesisService.SynthesizeActor(rootNode, classStructure, actorName);
-
                 var yamlCode = _yamlWriter.WriteYaml(yamlStructure);
 
-                return Ok(new { FileName = $"{actorName.ToLower()}.yaml", Code = yamlCode });
+                // --- YAML Hozzáfűzés (Overwrite/Append) ---
+                // Mivel a "rules" fájlba több unit is kerülhet, itt nem felülírjuk az egész fájlt, 
+                // hanem HOZZÁFŰZZÜK a végéhez.
+                string updatedFilePath = _fileWriter.AppendToYamlRules(yamlCode);
+
+                return Ok(new
+                {
+                    Message = "Unit successfully added to rules file.",
+                    UpdatedFile = updatedFilePath,
+                    Code = yamlCode
+                });
             }
             catch (Exception ex) { return StatusCode(500, new { Error = ex.Message }); }
         }

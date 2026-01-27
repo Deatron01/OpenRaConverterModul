@@ -33,3 +33,8 @@ C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConv
 C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\obj\Debug\net8.0\OpenRA.Converter.Api.pdb
 C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\obj\Debug\net8.0\OpenRA.Converter.Api.genruntimeconfig.cache
 C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\obj\Debug\net8.0\ref\OpenRA.Converter.Api.dll
+C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\bin\Debug\net8.0\Config\OpenRaConfig.json
+C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\biote\Desktop\OE_Lagrange_Side_Projects\OpenRaConverterModul\OpenRaConverterModul\OpenRA.Converter.Api\obj\Debug\net8.0\OpenRA.Converter.Api.MvcApplicationPartsAssemblyInfo.cs

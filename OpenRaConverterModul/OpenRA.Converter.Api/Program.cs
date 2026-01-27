@@ -1,7 +1,12 @@
 using OpenRA.Converter.Core.Interfaces;
+using OpenRA.Converter.Core.Models; // Add hozzá ezt a using-ot
 using OpenRA.Converter.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- Configuration ---
+// Beolvassuk a ConverterSettings szekciót az appsettings.json-ból
+builder.Services.Configure<ConverterSettings>(builder.Configuration.GetSection("ConverterSettings"));
 
 // --- Service Registration ---
 
@@ -20,13 +25,16 @@ builder.Services.AddScoped<ICodeWriter, CSharpCodeWriter>();
 builder.Services.AddScoped<IYamlSynthesisService, YamlSynthesisService>();
 builder.Services.AddScoped<IYamlCodeWriter, YamlCodeWriter>();
 
+// 5. File System (ÚJ)
+builder.Services.AddScoped<IFileWriterService, FileWriterService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// -- Middleware --
+// ... (többi rész marad változatlan)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

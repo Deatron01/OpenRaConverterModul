@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OpenRA.Converter.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10f09f7a4a0dde707b0ebd3e9f393ca2e92cf9cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7a5bf22dd34eefc7eef0c3e5aed2957a36e3c69")]
 [assembly: System.Reflection.AssemblyProductAttribute("OpenRA.Converter.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OpenRA.Converter.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
